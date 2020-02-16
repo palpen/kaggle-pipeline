@@ -14,4 +14,10 @@ $(FEATURE_TRN) $(FEATURE_TST) $(FEATURE_MAP): $(DATA_TRN) $(DATA_TST) | $(DIR_FE
                                              --test-file $(lastword $^) \
                                              --train-feature-file $(FEATURE_TRN) \
                                              --test-feature-file $(FEATURE_TST) \
-                                             --feature-map-file $(FEATURE_MAP)
+					     --feature-map-file $(FEATURE_MAP)
+
+clean:: clean_$(FEATURE_NAME)
+
+clean_$(FEATURE_NAME):
+	-rm $(FEATURE_TRN) $(FEATURE_TST) $(FEATURE_MAP)
+    
