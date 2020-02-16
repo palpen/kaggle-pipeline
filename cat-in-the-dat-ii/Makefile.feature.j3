@@ -1,5 +1,6 @@
 #--------------------------------------------------------------------------
-# j3: better categorical encoding
+# j3: better categorical encoding (see j3 notebook in notebook/ for exploration
+# of techniques used here)
 #--------------------------------------------------------------------------
 include Makefile
 
