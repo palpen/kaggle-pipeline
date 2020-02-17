@@ -1,4 +1,4 @@
-include Makefile.feature.esb1
+include Makefile.feature.j3
 
 N_STOP = 20
 ALGO_NAME := autolgb
@@ -20,6 +20,8 @@ retrain: clean_$(ALGO_NAME) submission
 
 $(PREDICT_TST) $(PREDICT_VAL): $(FEATURE_TRN) $(FEATURE_TST) \
                                    | $(DIR_VAL) $(DIR_TST)
+	@echo "Running training script..."
+	which python
 	./src/train_predict_autolgb.py --train-file $< \
                               --test-file $(word 2, $^) \
                               --predict-valid-file $(PREDICT_VAL) \
@@ -35,8 +37,10 @@ $(SUBMISSION_TST): $(PREDICT_TST) $(HEADER) $(ID_TST) | $(DIR_SUB)
 	rm $@.tmp
 
 $(METRIC_VAL): $(PREDICT_VAL) $(Y_TRN) | $(DIR_METRIC)
+	@echo "Running prediction script..."
+	which python
 	python ./src/evaluate.py --predict-file $< \
-                             --target-file $(lastword $^) > $@
+                     --target-file $(lastword $^) > $@
 	cat $@
 
 
