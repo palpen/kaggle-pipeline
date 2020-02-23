@@ -1,0 +1,34 @@
+include Makefile
+
+FEATURE_NAME := esb3
+
+BASE_MODELS := logistic_j2 \
+               lgb2_j2 \
+	       autolgb_j2
+
+PREDICTS_TRN := $(foreach m, $(BASE_MODELS), $(DIR_VAL)/$(m).val.yht)
+PREDICTS_TST := $(foreach m, $(BASE_MODELS), $(DIR_TST)/$(m).tst.yht)
+
+FEATURE_TRN := $(DIR_FEATURE)/$(FEATURE_NAME).trn.csv
+FEATURE_TST := $(DIR_FEATURE)/$(FEATURE_NAME).tst.csv
+FEATURE_MAP := $(DIR_FEATURE)/$(FEATURE_NAME).fmap
+
+# Creates .fmap text files listing the individual features
+# Where are these .fmap files being used ???
+$(FEATURE_MAP): | $(DIR_FEATURE)
+	python src/create_fmap_esb.py --base-models $(BASE_MODELS) \
+                                  --feature-map-file $@
+
+# $^ --> name of all the pre-requisites
+# $@ --> file name of the target of the rule
+$(FEATURE_TRN): $(Y_TRN) $(PREDICTS_TRN) | $(DIR_FEATURE)
+	paste -d, $^ | tr -d '\r' > $@
+
+$(FEATURE_TST): $(Y_TST) $(PREDICTS_TST) | $(DIR_FEATURE)
+	paste -d, $^ | tr -d '\r' > $@
+
+
+clean:: clean_$(FEATURE_NAME)
+
+clean_$(FEATURE_NAME):
+	-rm $(FEATURE_TRN) $(FEATURE_TST)
