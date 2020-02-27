@@ -1,4 +1,4 @@
-name: personas
+name: dsml
 channels:
 - defaults
 - conda-forge
