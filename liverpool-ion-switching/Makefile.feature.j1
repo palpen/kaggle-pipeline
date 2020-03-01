@@ -1,9 +1,9 @@
 #--------------------------------------------------------------------------
-# j2: Target encoding
+# j1: Target encoding
 #--------------------------------------------------------------------------
 include Makefile
 
-FEATURE_NAME := j2
+FEATURE_NAME := j1
 
 FEATURE_TRN := $(DIR_FEATURE)/$(FEATURE_NAME).trn.h5
 FEATURE_TST := $(DIR_FEATURE)/$(FEATURE_NAME).tst.h5
