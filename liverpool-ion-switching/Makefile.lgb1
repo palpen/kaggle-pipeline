@@ -1,6 +1,6 @@
-include Makefile.feature.j4
+include Makefile.feature.j1
 
-N = 10000
+N = 50
 N_LEAF = 128
 LRATE = 0.05
 N_MIN = 25
