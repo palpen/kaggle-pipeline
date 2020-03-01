@@ -17,6 +17,7 @@ dependencies:
 - eli5=0.10.1
 - pylint=2.4.4
 - tqdm=4.41.1
+- jupyter=1.0.0
 - pip
 - pip:
   - ipython==7.10.1
