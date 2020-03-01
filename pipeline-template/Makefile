@@ -24,7 +24,9 @@ DATA_TRN := $(DIR_DATA)/train.csv
 DATA_TST := $(DIR_DATA)/test.csv
 SAMPLE_SUBMISSION := $(DIR_DATA)/sample_submission.csv
 
-# number of columns (why is it named LABEL_IDX)
+# Index of the label in train.csv
+# How to get this quickly?
+# awk -F, '{print NF}' train.csv | head -1
 LABEL_IDX = 25
 
 ID_TST := $(DIR_DATA)/id.tst.csv
