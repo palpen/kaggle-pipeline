@@ -18,4 +18,4 @@ if __name__ == '__main__':
     y = np.loadtxt(args.target_file, delimiter=',')
 
     model_name = os.path.splitext(os.path.splitext(os.path.basename(args.predict_file))[0])[0]
-    print('{}\t{:.6f}'.format(model_name, AUC(y, p)))
+#    print('{}\t{:.6f}'.format(model_name, AUC(y, p)))

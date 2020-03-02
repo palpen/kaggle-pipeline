@@ -21,26 +21,34 @@ def generate_feature(train_file, test_file, train_feature_file,
     tst = pd.read_csv(test_file, index_col=ID_COL)
 
     y = trn[TARGET_COL]
-    n_trn = trn.shape[0]
-
     trn.drop(TARGET_COL, axis=1, inplace=True)
-    logging.info(f'categorical: {trn.shape[1]})')
 
-    df = pd.concat([trn, tst], axis=0)
+    trn['time_feat'] = trn.reset_index()['time']
+    tst['time_feat'] = tst.reset_index()['time']
 
-    logging.info('label encoding categorical variables')
-    cv = StratifiedKFold(n_splits=N_FOLD, shuffle=True, random_state=SEED)
-    te = TargetEncoder(cv=cv)
-    te.fit(trn, y)
-    df = te.transform(df)
+    # Generate feature identifying batches
+    # batches are 500,000 records long
+    # This will be used to generate grouped by lagged features
+#    batch_size= 500000
+#    n_trn = trn.shape[0]
+#    for i in range(1,int((n_trn / batch_size) + 1)):
+#	beg = (i-1)*batch_size
+#	end = i*batch_size -1
+#	trn.loc[beg:end, f'batch'] = i
+#
+#    n_tst = tst.shape[0]
+#    for i in range(1,int((n_tst / batch_size) + 1)):
+#	beg = (i-1)*batch_size
+#	end = i*batch_size -1
+#	tst.loc[beg:end, f'batch'] = i
 
     with open(feature_map_file, 'w') as f:
-        for i, col in enumerate(df.columns):
+        for i, col in enumerate(trn.columns):
             f.write('{}\t{}\tq\n'.format(i, col))
 
     logging.info('saving features')
-    save_data(df.values[:n_trn,], y.values, train_feature_file)
-    save_data(df.values[n_trn:,], None, test_feature_file)
+    save_data(trn.values, y.values, train_feature_file)
+    save_data(tst.values, None, test_feature_file)
 
 
 if __name__ == '__main__':

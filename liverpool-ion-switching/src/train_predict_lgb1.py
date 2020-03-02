@@ -36,7 +36,7 @@ def train_predict(train_file, test_file, predict_valid_file, predict_test_file,
 
     params = {'random_state': SEED,
               'n_jobs': -1,
-              'objective': 'binary',
+              'objective': 'regression',
               'boosting': 'gbdt',
               'learning_rate': lrate,
               'num_leaves': n_leaf,
@@ -45,7 +45,7 @@ def train_predict(train_file, test_file, predict_valid_file, predict_test_file,
               'bagging_freq': subrow_freq,
               'verbosity': -1,
               'min_child_samples': n_min,
-              'metric': 'auc'}
+              'metric': 'rmse'}
 
     p = np.zeros(X.shape[0])
     p_tst = np.zeros(X_tst.shape[0])
@@ -62,12 +62,14 @@ def train_predict(train_file, test_file, predict_valid_file, predict_test_file,
         logging.info('best iteration={}'.format(n_best))
 
         p[i_val] = clf.predict(X[i_val])
-        logging.info('CV #{}: {:.4f}'.format(i, AUC(y[i_val], p[i_val])))
+        p[i_val] = np.clip(p[i_val], 0, 10)
+	# logging.info('CV #{}: {:.4f}'.format(i, AUC(y[i_val], p[i_val])))
 
         if not retrain:
             p_tst += clf.predict(X_tst) / N_FOLD
+    p_tst = np.clip(p_tst, 0, 10)
 
-    logging.info('CV: {:.4f}'.format(AUC(y, p)))
+    # logging.info('CV: {:.4f}'.format(AUC(y, p)))
     logging.info('Saving validation predictions...')
     np.savetxt(predict_valid_file, p, fmt='%.6f', delimiter=',')
 
@@ -87,6 +89,7 @@ def train_predict(train_file, test_file, predict_valid_file, predict_test_file,
 
         clf = clf.fit(X, y)
         p_tst = clf.predict(X_tst)
+        p_tst = np.clip(p_tst, 0, 10)
 
     logging.info('Saving test predictions...')
     np.savetxt(predict_test_file, p_tst, fmt='%.6f', delimiter=',')
