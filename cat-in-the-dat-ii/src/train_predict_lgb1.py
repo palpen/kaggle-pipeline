@@ -18,10 +18,11 @@ import lightgbm as lgb
 
 
 def train_predict(train_file, test_file, predict_valid_file, predict_test_file,
-                  n_est=100, n_leaf=200, lrate=.1, n_min=8, subcol=.3, subrow=.8,
-                  subrow_freq=100, n_stop=100, retrain=True):
+                  n_est=100, n_leaf=200, lrate=.1, n_min=8, subcol=.3,
+                  subrow=.8, subrow_freq=100, n_stop=100, retrain=True):
 
-    model_name = os.path.splitext(os.path.splitext(os.path.basename(predict_test_file))[0])[0]
+    model_name = os.path.splitext(
+        os.path.splitext(os.path.basename(predict_test_file))[0])[0]
 
     logging.basicConfig(format='%(asctime)s   %(levelname)s   %(message)s',
                         level=logging.DEBUG,
