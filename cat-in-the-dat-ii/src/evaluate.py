@@ -14,6 +14,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    # p contains the predictions across all K folds in cross validation
     p = np.loadtxt(args.predict_file, delimiter=',')
     y = np.loadtxt(args.target_file, delimiter=',')
 
